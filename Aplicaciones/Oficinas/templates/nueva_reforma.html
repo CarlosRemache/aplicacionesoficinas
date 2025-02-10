@@ -1,0 +1,126 @@
+{%  extends "./plantilla.html" %}
+{% load static %}
+{%  block contenido %}
+
+
+<style>
+    .contenedor-formulario {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+    
+    .formulario {
+        background: #f4f4f4;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        width: 400px;
+        text-align: center;
+    }
+    
+    .formulario h3 {
+        margin-bottom: 15px;
+        color: #333;
+    }
+    
+    .formulario label {
+        display: block;
+        font-weight: bold;
+        margin-top: 10px;
+        text-align: left;
+    }
+    
+    .formulario select,
+    .formulario input,
+    .formulario textarea {
+        width: 100%;
+        padding: 8px;
+        margin-top: 5px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+    
+    .formulario textarea {
+        height: 80px;
+        resize: none;
+    }
+    
+    .boton-contenedor {
+        margin-top: 15px;
+        display: flex;
+        justify-content: space-between;
+    }
+    
+    .boton {
+        background: #007bff;
+        color: white;
+        padding: 8px 12px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        width: 48%;
+    }
+    
+    .boton:hover {
+        background: #0056b3;
+    }
+    
+    .boton.cancelar {
+        background: #dc3545;
+    }
+    
+    .boton.cancelar:hover {
+        background: #b02a37;
+    }
+    
+</style>
+
+<div class="contenedor-formulario">
+    <form action="/guardar_reforma/" method="post" class="formulario">
+        <h3>Agregar Nueva Reforma</h3>
+        {% csrf_token %}
+
+        <label for="oficina">Oficina:</label>
+        <select name="oficina" id="oficina" required>
+            {% for oficina in oficinas %}
+            <option value="{{ oficina.id }}">{{ oficina.nombre }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="contratista">Contratista:</label>
+        <select name="contratista" id="contratista" required>
+            {% for contratista in contratistas %}
+            <option value="{{ contratista.id }}">{{ contratista.nombre }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="fecha_inicio">Fecha de Inicio:</label>
+        <input type="date" name="fecha_inicio" id="fecha_inicio" value="{{ reforma.fecha_inicio|date:'Y-m-d' }}" min="2000-01-01" max="2030-12-31" required>
+
+        <label for="fecha_fin">Fecha de Fin:</label>
+        <input type="date" name="fecha_fin" id="fecha_fin" value="{{ reforma.fecha_fin|date:'Y-m-d' }}" min="2000-01-01" max="2030-12-31">
+
+        <label for="presupuesto">Presupuesto:</label>
+        <input type="number" name="presupuesto" id="presupuesto" step="0.01" required>
+
+        <label for="descripcion">Descripción:</label>
+        <textarea name="descripcion" id="descripcion" required></textarea>
+
+        <label for="reforma">Estado de la Reforma:</label>
+        <select name="reforma" id="reforma" required>
+            <option value="Pendiente">Pendiente</option>
+            <option value="En Progreso">En Progreso</option>
+            <option value="Finalizado">Finalizado</option>
+        </select>
+
+        <div class="boton-contenedor">
+            <button type="submit" class="boton">Guardar</button>
+            <button type="reset" class="boton cancelar">Cancelar</button>
+        </div>
+    </form>
+</div>
+
+
+{% endblock %}

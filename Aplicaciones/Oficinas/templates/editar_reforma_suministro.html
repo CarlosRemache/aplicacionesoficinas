@@ -1,0 +1,98 @@
+{%  extends "./plantilla.html" %}
+{% load static %}
+{%  block contenido %}
+
+<style>
+    .contenedor-formulario {
+        width: 60%;
+        margin: 40px auto;
+        text-align: center;
+        background: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    h3 {
+        color: #333;
+        margin-bottom: 20px;
+    }
+    
+    label {
+        font-size: 16px;
+        margin: 10px 0 5px;
+        display: block;
+        color: #333;
+    }
+    
+    input[type="number"],
+    select {
+        width: 100%;
+        padding: 10px;
+        margin: 5px 0 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 14px;
+    }
+    
+    .acciones {
+        margin-top: 20px;
+    }
+    
+    .btn {
+        padding: 10px 20px;
+        border-radius: 5px;
+        text-decoration: none;
+        font-size: 16px;
+        margin: 0 10px;
+    }
+    
+    .btn-success {
+        background-color: #28a745;
+        color: white;
+    }
+    
+    .btn-secondary {
+        background-color: #6c757d;
+        color: white;
+    }
+    
+</style>
+
+<div class="contenedor-formulario">
+    <h3>Editar Asignación de Suministro</h3>
+    <form action="/procesar_editar_reforma_suministro/" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="id" value="{{ reforma_suministro.id }}">
+
+        <label for="reforma">Reforma:</label>
+        <select name="reforma" id="reforma" required>
+            {% for reforma in reformas %}
+                <option value="{{ reforma.id }}" {% if reforma.id == reforma_suministro.reforma.id %}selected{% endif %}>
+                    {{ reforma.descripcion }}
+                </option>
+            {% endfor %}
+        </select>
+
+        <label for="suministro">Suministro:</label>
+        <select name="suministro" id="suministro" required>
+            {% for suministro in suministros %}
+                <option value="{{ suministro.id }}" {% if suministro.id == reforma_suministro.suministro.id %}selected{% endif %}>
+                    {{ suministro.nombre }}
+                </option>
+            {% endfor %}
+        </select>
+
+        <label for="cantidad_usada">Cantidad Usada:</label>
+        <input type="number" name="cantidad_usada" id="cantidad_usada" value="{{ reforma_suministro.cantidad_usada }}" required>
+
+        <div class="acciones">
+            <button type="submit" class="btn btn-success">Guardar</button>
+            <a href="/listado_reforma_suministro/" class="btn btn-secondary">Cancelar</a>
+        </div>
+    </form>
+</div>
+
+
+
+{% endblock %}

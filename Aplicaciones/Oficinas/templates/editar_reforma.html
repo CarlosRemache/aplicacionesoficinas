@@ -1,0 +1,116 @@
+{%  extends "./plantilla.html" %}
+{% load static %}
+{%  block contenido %}
+
+<style>
+    .contenedor-formulario {
+        width: 60%;
+        margin: 40px auto;
+        text-align: center;
+        background: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    h3 {
+        color: #333;
+        margin-bottom: 20px;
+    }
+    
+    label {
+        font-size: 16px;
+        margin: 10px 0 5px;
+        display: block;
+        color: #333;
+    }
+    
+    input[type="date"],
+    input[type="number"],
+    select,
+    textarea {
+        width: 100%;
+        padding: 10px;
+        margin: 5px 0 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 14px;
+    }
+    
+    textarea {
+        resize: vertical;
+        height: 100px;
+    }
+    
+    .acciones {
+        margin-top: 20px;
+    }
+    
+    .btn {
+        padding: 10px 20px;
+        border-radius: 5px;
+        text-decoration: none;
+        font-size: 16px;
+        margin: 0 10px;
+    }
+    
+    .btn-success {
+        background-color: #28a745;
+        color: white;
+    }
+    
+    .btn-secondary {
+        background-color: #6c757d;
+        color: white;
+    }
+    
+</style>
+
+<div class="contenedor-formulario">
+    <h3>Editar Reforma</h3>
+    <form action="/procesar_editar_reforma/" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="id" value="{{ reforma.id }}">
+
+        <label for="oficina">Oficina:</label>
+        <select name="oficina" id="oficina" required>
+            {% for oficina in oficinas %}
+                <option value="{{ oficina.id }}" {% if oficina.id == reforma.oficina.id %}selected{% endif %}>{{ oficina.nombre }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="contratista">Contratista:</label>
+        <select name="contratista" id="contratista" required>
+            {% for contratista in contratistas %}
+                <option value="{{ contratista.id }}" {% if contratista.id == reforma.contratista.id %}selected{% endif %}>{{ contratista.nombre }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="fecha_inicio">Fecha de Inicio:</label>
+        <input type="date" name="fecha_inicio" id="fecha_inicio" value="{{ reforma.fecha_inicio|date:'Y-m-d' }}" min="2000-01-01" max="2030-12-31" required>
+
+        <label for="fecha_fin">Fecha de Fin:</label>
+        <input type="date" name="fecha_fin" id="fecha_fin" value="{{ reforma.fecha_fin|date:'Y-m-d' }}" min="2000-01-01" max="2030-12-31" required>
+
+        <label for="presupuesto">Presupuesto:</label>
+        <input type="number" step="0.01" name="presupuesto" id="presupuesto" value="{{ reforma.presupuesto }}" required>
+
+        <label for="descripcion">Descripción:</label>
+        <textarea name="descripcion" id="descripcion" required>{{ reforma.descripcion }}</textarea>
+
+        <label for="reforma">Estado de la Reforma:</label>
+        <select name="reforma" id="reforma" required>
+            <option value="Pendiente" {% if reforma.reforma == 'Pendiente' %}selected{% endif %}>Pendiente</option>
+            <option value="En Progreso" {% if reforma.reforma == 'En Progreso' %}selected{% endif %}>En Progreso</option>
+            <option value="Finalizado" {% if reforma.reforma == 'Finalizado' %}selected{% endif %}>Finalizado</option>
+        </select>
+
+        <div class="acciones">
+            <button type="submit" class="btn btn-success">Guardar</button>
+            <a href="/listado_reformas/" class="btn btn-secondary">Cancelar</a>
+        </div>
+    </form>
+</div>
+
+
+{% endblock %}

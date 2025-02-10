@@ -1,0 +1,128 @@
+{%  extends "./plantilla.html" %}
+{% load static %}
+{%  block contenido %}
+
+<style>
+    .contenedor-tabla {
+        width: 80%;
+        margin: 40px auto;
+        text-align: center;
+    }
+    
+    h3 {
+        margin-bottom: 20px;
+        color: #333;
+    }
+    
+    .tabla-reforma-suministro {
+        width: 100%;
+        border-collapse: collapse;
+        background: #fff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    .tabla-reforma-suministro thead {
+        background: #007bff;
+        color: white;
+    }
+    
+    .tabla-reforma-suministro th, 
+    .tabla-reforma-suministro td {
+        padding: 10px;
+        border: 1px solid #ddd;
+        text-align: center;
+    }
+    
+    .tabla-reforma-suministro tr:nth-child(even) {
+        background: #f9f9f9;
+    }
+    
+    .btn {
+        padding: 6px 12px;
+        border-radius: 5px;
+        text-decoration: none;
+        font-size: 14px;
+    }
+    
+    .btn-warning {
+        background: #ffc107;
+        color: #000;
+    }
+    
+    .btn-danger {
+        background: #dc3545;
+        color: #fff;
+    }
+    
+    .btn-primary {
+        background: #007bff;
+        color: #fff;
+        padding: 10px 15px;
+        display: inline-block;
+        margin-top: 10px;
+    }
+    
+
+</style>
+
+
+<div class="contenedor-tabla">
+    <h3>Asignación de Suministros a Reformas</h3>
+    <table class="tabla-reforma-suministro" id="reformasu">
+        <thead>
+            <tr>
+                <th>Reforma</th>
+                <th>Suministro</th>
+                <th>Cantidad Usada</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for rs in reformas_suministros %}
+            <tr>
+                <td>{{ rs.reforma.descripcion }}</td>
+                <td>{{ rs.suministro.nombre }}</td>
+                <td>{{ rs.cantidad_usada }}</td>
+                <td>
+                    <a href="/editar_reforma_suministro/{{ rs.id }}" class="btn btn-warning">Editar</a>
+                    <a href="/eliminar_reforma_suministro/{{ rs.id }}" class="btn btn-danger">Eliminar</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <br>
+    <a href="/nuevo_reforma_suministro/" class="btn btn-primary">Asignar Nuevo Suministro</a>
+    <br>
+    <a href="{% url 'generar_reporte_pdf' %}" class="btn btn-primary">Generar Reporte PDF</a>
+
+</div>
+
+
+
+<script>
+    $(document).ready(function() {
+      $('#reformasu').DataTable({
+        dom: 'Bfrtip',
+        buttons: [
+          'copy', 
+          'excel', 
+          'csv', 
+          {
+            extend: 'pdf',
+            text: 'PDF',
+            orientation: 'landscape', 
+            pageSize: 'A4',
+          }
+        ],
+        
+      });
+    });
+  </script>
+
+
+
+
+{% endblock %}
+
+

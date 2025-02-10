@@ -1,0 +1,141 @@
+
+{%  extends "./plantilla.html" %}
+{% load static %}
+{%  block contenido %}
+
+<style>
+    .contenedor-tabla {
+        width: 80%;
+        margin: 40px auto;
+        text-align: center;
+    }
+    
+    h3 {
+        margin-bottom: 20px;
+        color: #333;
+    }
+    
+    .tabla-suministros {
+        width: 100%;
+        border-collapse: collapse;
+        background: #fff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    .tabla-suministros thead {
+        background: #007bff;
+        color: white;
+    }
+    
+    .tabla-suministros th, 
+    .tabla-suministros td {
+        padding: 10px;
+        border: 1px solid #ddd;
+        text-align: center;
+    }
+    
+    .tabla-suministros tr:nth-child(even) {
+        background: #f9f9f9;
+    }
+    
+    .btn {
+        padding: 6px 12px;
+        border-radius: 5px;
+        text-decoration: none;
+        font-size: 14px;
+    }
+    
+    .btn-warning {
+        background: #ffc107;
+        color: #000;
+    }
+    
+    .btn-danger {
+        background: #dc3545;
+        color: #fff;
+    }
+    
+    .btn-primary {
+        background: #007bff;
+        color: #fff;
+        padding: 10px 15px;
+        display: inline-block;
+        margin-top: 10px;
+    }
+    
+</style>
+
+<div class="contenedor-tabla" >
+    <h3>Lista de Suministros</h3>
+    <table class="tabla-suministros" id="tbl_suministro" >
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Descripción</th>
+                <th>Cantidad</th>
+                <th>Costo Unitario</th>
+                <th>FOTO</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for suministro in suministros %}
+            <tr>
+                <td>{{ suministro.nombre }}</td>
+                <td>{{ suministro.descripcion }}</td>
+                <td>{{ suministro.cantidad }}</td>
+                <td>${{ suministro.costo_unitario }}</td>
+                            
+                <td>
+                    {% if suministro.evidencias and suministro.evidencias.url %}
+                    <a href="{{ suministro.evidencias.url }}" target="_blank">
+                        <img src="{{ suministro.evidencias.url }}" alt="" height="100px" width="100px">
+                    </a><br>
+                    <a download href="{{ suministro.evidencias.url }}">
+                        Descargar
+                    </a>
+                {% else %}
+                    <p>No hay foto disponible.</p>
+                {% endif %}
+                </td>    
+
+                <td>
+                    <a href="/editar_suministro/{{ suministro.id }}" class="btn btn-warning">Editar</a>
+                    <a href="/eliminar_suministro/{{ suministro.id }}" class="btn btn-danger">Eliminar</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <br>
+    <a href="/nuevo_suministro/" class="btn btn-primary">Agregar Nuevo Suministro</a>
+</div>
+
+
+
+
+<script>
+    $(document).ready(function() {
+      $('#tbl_suministro').DataTable({
+        dom: 'Bfrtip',
+        buttons: [
+          'copy', 
+          'excel', 
+          'csv', 
+          {
+            extend: 'pdf',
+            text: 'PDF',
+            orientation: 'landscape', 
+            pageSize: 'A4',
+          }
+        ],
+        
+      });
+    });
+  </script>
+
+
+
+{% endblock %}
+
+

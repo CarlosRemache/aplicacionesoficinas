@@ -1,0 +1,97 @@
+{%  extends "./plantilla.html" %}
+{% load static %}
+{%  block contenido %}
+
+<style>
+    .contenedor-formulario {
+        width: 60%;
+        margin: 40px auto;
+        text-align: center;
+        background: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    h3 {
+        color: #333;
+        margin-bottom: 20px;
+    }
+    
+    label {
+        font-size: 16px;
+        margin: 10px 0 5px;
+        display: block;
+        color: #333;
+    }
+    
+    input[type="text"],
+    input[type="number"],
+    textarea,
+    select {
+        width: 100%;
+        padding: 10px;
+        margin: 5px 0 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 14px;
+    }
+    
+    .acciones {
+        margin-top: 20px;
+    }
+    
+    .btn {
+        padding: 10px 20px;
+        border-radius: 5px;
+        text-decoration: none;
+        font-size: 16px;
+        margin: 0 10px;
+    }
+    
+    .btn-success {
+        background-color: #28a745;
+        color: white;
+    }
+    
+    .btn-secondary {
+        background-color: #6c757d;
+        color: white;
+    }
+    
+</style>
+<div class="contenedor-formulario">
+    <h3>Editar Oficina</h3>
+    <form action="/procesar_editar_oficina/" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="id" value="{{ oficina.id }}">
+
+        <label for="txt_nombre">Nombre:</label>
+        <input type="text" name="txt_nombre" id="txt_nombre" value="{{ oficina.nombre }}" required>
+
+        <label for="txt_ubicacion">Ubicación:</label>
+        <textarea name="txt_ubicacion" id="txt_ubicacion" required>{{ oficina.ubicacion }}</textarea>
+
+        <label for="txt_responsable">Responsable:</label>
+        <input type="text" name="txt_responsable" id="txt_responsable" value="{{ oficina.responsable }}" required>
+
+        <label for="txt_capacidad">Capacidad:</label>
+        <input type="number" name="txt_capacidad" id="txt_capacidad" value="{{ oficina.capacidad }}" required>
+
+        <label for="txt_estado">Estado:</label>
+        <select name="txt_estado" id="txt_estado" required>
+            <option value="Disponible" {% if oficina.estado == "Disponible" %}selected{% endif %}>Disponible</option>
+            <option value="En remodelación" {% if oficina.estado == "En remodelación" %}selected{% endif %}>En remodelación</option>
+            <option value="Ocupada" {% if oficina.estado == "Ocupada" %}selected{% endif %}>Ocupada</option>
+        </select>
+
+        <div class="acciones">
+            <button type="submit" class="btn btn-success">Guardar</button>
+            <a href="/listado_oficinas/" class="btn btn-secondary">Cancelar</a>
+        </div>
+    </form>
+</div>
+
+
+
+{% endblock %}

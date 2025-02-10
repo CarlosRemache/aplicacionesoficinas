@@ -1,0 +1,120 @@
+{%  extends "./plantilla.html" %}
+{% load static %}
+{%  block contenido %}
+
+<style>
+    .contenedor-formulario {
+        width: 60%;
+        margin: 40px auto;
+        text-align: center;
+        background: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    h3 {
+        color: #333;
+        margin-bottom: 20px;
+    }
+    
+    label {
+        font-size: 16px;
+        margin: 10px 0 5px;
+        display: block;
+        color: #333;
+    }
+    
+    input[type="text"],
+    input[type="number"],
+    textarea {
+        width: 100%;
+        padding: 10px;
+        margin: 5px 0 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 14px;
+    }
+    
+    textarea {
+        resize: vertical;
+        height: 100px;
+    }
+    
+    .acciones {
+        margin-top: 20px;
+    }
+    
+    .btn {
+        padding: 10px 20px;
+        border-radius: 5px;
+        text-decoration: none;
+        font-size: 16px;
+        margin: 0 10px;
+    }
+    
+    .btn-success {
+        background-color: #28a745;
+        color: white;
+    }
+    
+    .btn-secondary {
+        background-color: #6c757d;
+        color: white;
+    }
+    
+</style>
+
+<div class="contenedor-formulario">
+    <h3>Editar Suministro</h3>
+    <form action="/procesar_editar_suministro/" method="post"     enctype="multipart/form-data"    >
+        {% csrf_token %}
+        <input type="hidden" name="id" value="{{ suministro.id }}">
+
+        <label for="nombre">Nombre:</label>
+        <input type="text" name="nombre" id="nombre" value="{{ suministro.nombre }}" required>
+
+        <label for="descripcion">Descripción:</label>
+        <textarea name="descripcion" id="descripcion" required>{{ suministro.descripcion }}</textarea>
+
+        <label for="cantidad">Cantidad:</label>
+        <input type="number" name="cantidad" id="cantidad" value="{{ suministro.cantidad }}" required>
+
+        <label for="costo_unitario">Costo Unitario:</label>
+        <input type="number" name="costo_unitario" id="costo_unitario" step="0.01" value="{{ suministro.costo_unitario }}" required>
+
+  
+        <label for="foto" class="form-label"><b>Foto:</b></label>
+        <input type="file" name="foto" id="foto" class="file" accept="image/*">
+        {% if suministro.foto %}
+        <img src="{{ suministro.foto.url }}" alt="Foto actual" class="img-thumbnail mt-2" style="width: 150px;">
+        {% endif %}
+
+        <div class="acciones">
+            <button type="submit" class="btn btn-success">Guardar</button>
+            <a href="/listado_suministros/" class="btn btn-secondary">Cancelar</a>
+        </div>
+    </form>
+</div>
+
+
+<script>
+    $(document).ready(function() {
+        // Inicializamos el campo fileinput
+        $("#evidencia").fileinput({
+            showPreview: true,  // Muestra una vista previa de la imagen
+            allowedFileExtensions: ['jpg', 'jpeg', 'png', 'gif'],  // Opcional: extensiones permitidas
+            maxFileSize: 2000,  // Tamaño máximo del archivo (en KB)
+            browseClass: "btn btn-primary", // Clase para el botón de carga
+            fileActionSettings: {
+                showZoom: false,  // Opcional: ocultar el zoom del archivo
+            }
+        });
+    });
+</script>
+
+
+
+
+
+{% endblock %}

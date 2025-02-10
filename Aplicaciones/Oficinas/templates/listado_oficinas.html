@@ -1,0 +1,127 @@
+{%  extends "./plantilla.html" %}
+{% load static %}
+{%  block contenido %}
+
+<style>
+    .contenedor-tabla {
+        width: 80%;
+        margin: 40px auto;
+        text-align: center;
+    }
+    
+    h3 {
+        margin-bottom: 20px;
+        color: #333;
+    }
+    
+    .tabla-oficinas {
+        width: 100%;
+        border-collapse: collapse;
+        background: #fff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    .tabla-oficinas thead {
+        background: #007bff;
+        color: white;
+    }
+    
+    .tabla-oficinas th, 
+    .tabla-oficinas td {
+        padding: 10px;
+        border: 1px solid #ddd;
+        text-align: center;
+    }
+    
+    .tabla-oficinas tr:nth-child(even) {
+        background: #f9f9f9;
+    }
+    
+    .btn {
+        padding: 6px 12px;
+        border-radius: 5px;
+        text-decoration: none;
+        font-size: 14px;
+    }
+    
+    .btn-warning {
+        background: #ffc107;
+        color: #000;
+    }
+    
+    .btn-danger {
+        background: #dc3545;
+        color: #fff;
+    }
+    
+    .btn-primary {
+        background: #007bff;
+        color: #fff;
+        padding: 10px 15px;
+        display: inline-block;
+        margin-top: 10px;
+    }
+    
+
+</style>
+
+<div class="contenedor-tabla">
+    <h3>Lista de Oficinas</h3>
+    <table class="tabla-oficinas" id="tbl_oficinas">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Ubicación</th>
+                <th>Responsable</th>
+                <th>Capacidad</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for oficina in oficinas %}
+            <tr>
+                <td>{{ oficina.nombre }}</td>
+                <td>{{ oficina.ubicacion }}</td>
+                <td>{{ oficina.responsable }}</td>
+                <td>{{ oficina.capacidad }}</td>
+                <td>{{ oficina.estado }}</td>
+                <td>
+                    <a href="/editar_oficina/{{ oficina.id }}" class="btn btn-warning">Editar</a>
+                    <a href="/eliminar_oficina/{{ oficina.id }}" class="btn btn-danger">Eliminar</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <br>
+    <a href="/nueva_oficina/" class="btn btn-primary">Agregar Nueva Oficina</a>
+</div>
+
+
+<script>
+    $(document).ready(function() {
+      $('#tbl_oficinas').DataTable({
+        dom: 'Bfrtip',
+        buttons: [
+          'copy', 
+          'excel', 
+          'csv', 
+          {
+            extend: 'pdf',
+            text: 'PDF',
+            orientation: 'landscape', 
+            pageSize: 'A4',
+          }
+        ],
+        
+      });
+    });
+  </script>
+
+
+
+
+{% endblock %}
+
+

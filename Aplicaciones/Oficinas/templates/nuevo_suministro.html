@@ -1,0 +1,128 @@
+{%  extends "./plantilla.html" %}
+{% load static %}
+{%  block contenido %}
+<style>
+    .contenedor-formulario {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh; /* Centrado vertical */
+    }
+    
+    .formulario {
+        background: #f4f4f4;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        width: 600px;
+        text-align: center;
+    }
+    
+    .formulario h3 {
+        margin-bottom: 15px;
+        color: #333;
+    }
+    
+    .formulario label {
+        display: block;
+        font-weight: bold;
+        margin-top: 10px;
+        text-align: left;
+    }
+    
+    .formulario input, 
+    .formulario textarea {
+        width: 100%;
+        padding: 8px;
+        margin-top: 5px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+    
+    .formulario textarea {
+        resize: vertical;
+        height: 80px;
+    }
+    
+    .boton-contenedor {
+        margin-top: 15px;
+        display: flex;
+        justify-content: space-between;
+    }
+    
+    .boton {
+        background: #007bff;
+        color: white;
+        padding: 8px 12px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        width: 48%;
+    }
+    
+    .boton:hover {
+        background: #0056b3;
+    }
+    
+    .boton.cancelar {
+        background: #dc3545;
+    }
+    
+    .boton.cancelar:hover {
+        background: #b02a37;
+    }
+    
+</style>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+<div class="contenedor-formulario">
+    <form action="/guardar_suministro/" method="post" class="formulario"   enctype="multipart/form-data" >
+        <h3>Agregar Nuevo Suministro</h3>
+        {% csrf_token %}
+
+        <label for="nombre">Nombre:</label>
+        <input type="text" name="nombre" id="nombre" required>
+
+        <label for="descripcion">Descripción:</label>
+        <textarea name="descripcion" id="descripcion" required></textarea>
+
+        <label for="cantidad">Cantidad:</label>
+        <input type="number" name="cantidad" id="cantidad" required>
+
+        <label for="costo_unitario">Costo Unitario:</label>
+        <input type="number" name="costo_unitario" id="costo_unitario" step="0.01" required>
+            
+        <label for=""><b>Foto:</b></label>
+        <input type="file" name="foto" id="foto" class="file" accept="image/*" >
+
+        <div class="boton-contenedor">
+            <button type="submit" class="boton">Guardar</button>
+            <button type="reset" class="boton cancelar">Cancelar</button>
+        </div>
+    </form>
+</div>
+<br>
+<br>
+
+<script>
+    $(document).ready(function() {
+        // Inicializamos el campo fileinput
+        $("#evidencia").fileinput({
+            showPreview: true,  // Muestra una vista previa de la imagen
+            allowedFileExtensions: ['jpg', 'jpeg', 'png', 'gif'],  // Opcional: extensiones permitidas
+            maxFileSize: 2000,  // Tamaño máximo del archivo (en KB)
+            browseClass: "btn btn-primary", // Clase para el botón de carga
+            fileActionSettings: {
+                showZoom: false,  // Opcional: ocultar el zoom del archivo
+            }
+        });
+    });
+</script>
+
+
+
+{% endblock %}

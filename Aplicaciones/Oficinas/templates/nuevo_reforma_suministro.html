@@ -1,0 +1,105 @@
+{%  extends "./plantilla.html" %}
+{% load static %}
+{%  block contenido %}
+
+<style>
+    .contenedor-formulario {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+    
+    .formulario {
+        background: #f4f4f4;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        width: 400px;
+        text-align: center;
+    }
+    
+    .formulario h3 {
+        margin-bottom: 15px;
+        color: #333;
+    }
+    
+    .formulario label {
+        display: block;
+        font-weight: bold;
+        margin-top: 10px;
+        text-align: left;
+    }
+    
+    .formulario select, 
+    .formulario input {
+        width: 100%;
+        padding: 8px;
+        margin-top: 5px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+    
+    .boton-contenedor {
+        margin-top: 15px;
+        display: flex;
+        justify-content: space-between;
+    }
+    
+    .boton {
+        background: #007bff;
+        color: white;
+        padding: 8px 12px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        width: 48%;
+    }
+    
+    .boton:hover {
+        background: #0056b3;
+    }
+    
+    .boton.cancelar {
+        background: #dc3545;
+    }
+    
+    .boton.cancelar:hover {
+        background: #b02a37;
+    }
+    
+</style>
+
+
+<div class="contenedor-formulario">
+    <form action="/guardar_reforma_suministro/" method="post" class="formulario">
+        <h3>Asignar Suministro a Reforma</h3>
+        {% csrf_token %}
+
+        <label for="reforma">Reforma:</label>
+        <select name="reforma" id="reforma" required>
+            {% for reforma in reformas %}
+            <option value="{{ reforma.id }}">{{ reforma.descripcion }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="suministro">Suministro:</label>
+        <select name="suministro" id="suministro" required>
+            {% for suministro in suministros %}
+            <option value="{{ suministro.id }}">{{ suministro.nombre }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="cantidad_usada">Cantidad Usada:</label>
+        <input type="number" name="cantidad_usada" id="cantidad_usada" required>
+
+        <div class="boton-contenedor">
+            <button type="submit" class="boton">Guardar</button>
+            <button type="reset" class="boton cancelar">Cancelar</button>
+        </div>
+    </form>
+</div>
+
+
+
+{% endblock %}
